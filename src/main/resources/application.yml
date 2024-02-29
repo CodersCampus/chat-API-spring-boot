@@ -1,0 +1,15 @@
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://client-wise:wGOKLjyTQYFp0xBX@cluster0.ju5qxci.mongodb.net/?retryWrites=true&w=majority
+      #      uri: mongodb+srv://client-wise:Yz7J4CdQ9YdIGLW6@cluster0.ju5qxci.mongodb.net/?retryWrites=true&w=majority
+      database: test
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+logging:
+  level:
+    io:
+      jsonwebtoken=DEBUG:
