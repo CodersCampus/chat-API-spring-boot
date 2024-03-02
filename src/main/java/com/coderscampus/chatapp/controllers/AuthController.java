@@ -9,6 +9,7 @@ import com.coderscampus.chatapp.security.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "")
@@ -42,15 +47,29 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody User user){
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser =userRepository.save(user);
 
-        // Generate JWT
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-        System.out.println(userDetails);
-        final String jwt = jwtUtil.generateToken(userDetails, savedUser.getId());
+        User foundUser =  userRepository.findByUsername(user.getUsername());
+        if(foundUser != null) {
+            Map<String, Boolean> response = new HashMap<>();
+            response.put("isUserExist", true);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        else {
+            User newUser = new User();
+           newUser.setUsername(user.getUsername());
+           newUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return ResponseEntity.ok(new AuthResponse(jwt, userDetails.getUsername()));
+            User savedUser = userRepository.save(newUser);
+            String token = jwtUtil.generateToken(savedUser.getUsername(), savedUser.getId());
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .header("Set-Cookie","token="+token+"; Secure; SameSite:None")
+                    .body(new AuthResponse(token, savedUser.getId()));
+
+        }
+
+
+
     }
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody User user, HttpServletResponse response){
