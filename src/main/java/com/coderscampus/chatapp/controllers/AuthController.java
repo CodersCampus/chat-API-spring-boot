@@ -7,6 +7,7 @@ import com.coderscampus.chatapp.repository.UserRepository;
 import com.coderscampus.chatapp.security.CustomUserDetailsService;
 import com.coderscampus.chatapp.security.JwtUtil;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,5 +76,12 @@ public class AuthController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        SecurityContextHolder.clearContext();
+            return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
     }
 }
