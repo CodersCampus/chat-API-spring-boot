@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository; // Assuming you have a UserRepository class to interact with MongoDB
+    private UserRepository userRepository; 
 
     @GetMapping
     public List<User> getUsers() {
