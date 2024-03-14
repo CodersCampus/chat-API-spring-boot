@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository; 
+    private UserRepository userRepository;
 
     @GetMapping
     public List<User> getUsers() {
