@@ -9,13 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtUtil {
+public class    JwtUtil {
 
     private final String secret = "x11231dadsakd12k3j12sadas1231adadasd123213dasdasda23a3";
 
@@ -24,6 +28,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("username", userDetails.getUsername());
+        System.out.println(createToken(claims, userDetails.getUsername()));
         return createToken(claims, userDetails.getUsername());
     }
     public String generateToken(String username, String userId) {
@@ -75,13 +80,23 @@ public class JwtUtil {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+
     private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims)
+        // Get the current time
+        Date issuedAt = new Date(System.currentTimeMillis());
+
+        // Calculate the expiration time (10 hours from now)
+        LocalDateTime expirationLocalDateTime = LocalDateTime.now().plusHours(10);
+        ZoneId zoneId = ZoneId.of("UTC"); // Use UTC or your desired time zone
+        Date expirationDate = Date.from(expirationLocalDateTime.atZone(zoneId).toInstant());
+
+        return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setIssuedAt(issuedAt)
+                .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-
     }
+
 }

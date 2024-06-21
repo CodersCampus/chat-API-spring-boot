@@ -82,7 +82,7 @@ public class AuthController {
         // Generate JWT
         final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails, foundUser.getId());
-
+        System.out.println(jwt);
 
         if (foundUser.getId() != null) {
             Cookie cookie = new Cookie("token" ,jwt);
