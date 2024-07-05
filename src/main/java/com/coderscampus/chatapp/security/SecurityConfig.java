@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/signup","/signin", "/auth/**", "/websocket", "/users", "/messages/**" )
+                        auth.requestMatchers("/signup","/signin", "/auth/**", "/websocket", "/users", "/messages/**", "/create-channel" )
 
                                 .permitAll()
                                 .anyRequest()
