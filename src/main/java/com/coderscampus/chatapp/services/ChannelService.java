@@ -5,6 +5,8 @@ import com.coderscampus.chatapp.repository.ChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ChannelService {
     @Autowired
@@ -12,5 +14,8 @@ public class ChannelService {
 
     public Channel createChannel(Channel channel) {
     return channelRepository.save(channel);
+    }
+    public List<Channel> getAllChannels() {
+        return channelRepository.findAll();
     }
 }
