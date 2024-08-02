@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5173/**"));
+        configuration.setAllowedOrigins(List.of("https://chatapp-production-8152.up.railway.app", "https://chatapp-production-8152.up.railway.app/**"));
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "DELETE"));
         configuration.setAllowedHeaders(List.of("Content-Type", "Access-Control-Allow-Headers", "Authorization", "X-Requested-With"));
         configuration.setAllowCredentials(true); // Allow credentials

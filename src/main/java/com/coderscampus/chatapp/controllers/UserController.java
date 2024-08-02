@@ -17,9 +17,10 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
     @GetMapping
     public List<User> getUsers() {
+
+
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(user -> new User(user.getUsername(), user.getPassword(), user.getOnline(), user.getCraetedAt(),user.getId() ))
